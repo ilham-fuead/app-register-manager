@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Register Manager</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="diffuse-background"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="app-title">
+        <i class="fa-solid fa-server icon"></i>
+        <h1>Apps</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="location.reload()" data-tooltip="Refresh all">
+          <i class="fa-solid fa-arrows-rotate"></i> <span>Refresh</span>
+        </button>
+        <a href="add.html" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> <span>Add App</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-value">12</span> apps tracked
+      </div>
+      <div class="stat-item">
+        <span class="stat-dot clean"></span>
+        <span class="stat-value">8</span> clean
+      </div>
+      <div class="stat-item">
+        <span class="stat-dot dirty"></span>
+        <span class="stat-value">4</span> dirty
+      </div>
+      <div class="stat-item">
+        <i class="fa-solid fa-clock text-muted"></i>
+        Scanned <span class="stat-value">3m ago</span>
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="search-filter-bar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Search apps, stacks, branches..." oninput="filterApps()">
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" onclick="setFilter('all', this)">All</button>
+        <button class="chip" onclick="setFilter('php', this)">PHP</button>
+        <button class="chip" onclick="setFilter('node', this)">Node</button>
+        <button class="chip" onclick="setFilter('vue', this)">Vue</button>
+        <button class="chip" onclick="setFilter('dirty', this)">Dirty</button>
+        <button class="chip" onclick="setFilter('clean', this)">Clean</button>
+      </div>
+    </div>
+
+    <!-- App Grid -->
+    <div class="app-grid" id="appGrid">
+
+      <!-- Card: spmblive-v2026 -->
+      <a href="detail.html?app=spmblive-v2026" class="app-card" data-stack="php laravel vue" data-status="dirty" data-name="spmblive-v2026">
+        <div class="app-card-header">
+          <span class="app-card-name">spmblive-v2026</span>
+          <span class="app-card-status dirty" data-tooltip="3 uncommitted changes"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge php">PHP 8.2</span>
+          <span class="badge laravel">Laravel 11</span>
+          <span class="badge vue">Vue 3</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">feature/vue-migration</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 2h ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/spmblive</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> spmblive.test</button>
+        </div>
+      </a>
+
+      <!-- Card: ecaller -->
+      <a href="detail.html?app=ecaller" class="app-card" data-stack="php laravel" data-status="clean" data-name="ecaller">
+        <div class="app-card-header">
+          <span class="app-card-name">ecaller</span>
+          <span class="app-card-status clean" data-tooltip="Working tree clean"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge php">PHP 8.1</span>
+          <span class="badge laravel">Laravel 10</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">main</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 3d ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/ecaller</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> ecaller.test</button>
+        </div>
+      </a>
+
+      <!-- Card: my-dashboard -->
+      <a href="detail.html?app=my-dashboard" class="app-card" data-stack="node vue" data-status="dirty" data-name="my-dashboard">
+        <div class="app-card-header">
+          <span class="app-card-name">my-dashboard</span>
+          <span class="app-card-status dirty" data-tooltip="5 uncommitted changes"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge node">Node 20</span>
+          <span class="badge vue">Vue 3</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">dev/widgets</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 1h ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/my-dashboard</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> dashboard.test</button>
+        </div>
+      </a>
+
+      <!-- Card: novel-manager -->
+      <a href="detail.html?app=novel-manager" class="app-card" data-stack="php laravel" data-status="clean" data-name="novel-manager">
+        <div class="app-card-header">
+          <span class="app-card-name">novel-manager</span>
+          <span class="app-card-status clean" data-tooltip="Working tree clean"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge php">PHP 8.1</span>
+          <span class="badge laravel">Laravel 10</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">main</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 1w ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/novel-manager</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> novel.test</button>
+        </div>
+      </a>
+
+      <!-- Card: report-api -->
+      <a href="detail.html?app=report-api" class="app-card" data-stack="php laravel" data-status="dirty" data-name="report-api">
+        <div class="app-card-header">
+          <span class="app-card-name">report-api</span>
+          <span class="app-card-status dirty" data-tooltip="2 uncommitted changes"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge php">PHP 8.2</span>
+          <span class="badge laravel">Laravel 11</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">feature/pdf-export</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 6h ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/report-api</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> report-api.test</button>
+        </div>
+      </a>
+
+      <!-- Card: retail-app -->
+      <a href="detail.html?app=retail-app" class="app-card" data-stack="node vue" data-status="clean" data-name="retail-app">
+        <div class="app-card-header">
+          <span class="app-card-name">retail-app</span>
+          <span class="app-card-status clean" data-tooltip="Working tree clean"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge node">Node 20</span>
+          <span class="badge vue">Vue 3</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">main</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 5d ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/retail-app</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> retail.test</button>
+        </div>
+      </a>
+
+      <!-- Card: header_library -->
+      <a href="detail.html?app=header_library" class="app-card" data-stack="node vue" data-status="clean" data-name="header_library">
+        <div class="app-card-header">
+          <span class="app-card-name">header_library</span>
+          <span class="app-card-status clean" data-tooltip="Working tree clean"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge node">Node 20</span>
+          <span class="badge vue">Vue 3</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">main</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 2w ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/header-lib</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> headerlib.test</button>
+        </div>
+      </a>
+
+      <!-- Card: app-manager (this app itself) -->
+      <a href="detail.html?app=app-manager" class="app-card" data-stack="php" data-status="dirty" data-name="app-manager">
+        <div class="app-card-header">
+          <span class="app-card-name">app-manager</span>
+          <span class="app-card-status dirty" data-tooltip="1 uncommitted change"></span>
+        </div>
+        <div class="badge-row">
+          <span class="badge php">PHP 8.2</span>
+        </div>
+        <div class="app-card-meta">
+          <div class="meta-row">
+            <i class="fa-solid fa-code-branch"></i>
+            <span class="branch">main</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-solid fa-clock"></i>
+            <span>Last commit 10m ago</span>
+          </div>
+          <div class="meta-row">
+            <i class="fa-brands fa-github"></i>
+            <span class="text-muted">github.com/ilham/app-register-manager</span>
+          </div>
+        </div>
+        <div class="app-card-actions" onclick="event.stopPropagation(); event.preventDefault()">
+          <button class="btn btn-sm btn-secondary"><i class="fa-brands fa-git-alt"></i> Open in Cursor</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-arrow-up-right-from-square"></i> app-manager.test</button>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Empty state (hidden by default) -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <i class="fa-solid fa-folder-open"></i>
+      <h3>No apps match your filter</h3>
+      <p>Try a different search term or clear filters.</p>
+      <button class="btn btn-secondary" onclick="clearFilters()">Clear filters</button>
+    </div>
+  </div>
+
+  <script>
+    let activeFilter = 'all';
+
+    function setFilter(filter, chipEl) {
+      activeFilter = filter;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chipEl.classList.add('active');
+      filterApps();
+    }
+
+    function clearFilters() {
+      activeFilter = 'all';
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      document.querySelector('.chip').classList.add('active');
+      filterApps();
+    }
+
+    function filterApps() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const cards = document.querySelectorAll('.app-card');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const name = card.dataset.name || '';
+        const stack = card.dataset.stack || '';
+        const status = card.dataset.status || '';
+        let show = true;
+
+        // Filter chip
+        if (activeFilter === 'php' && !stack.includes('php')) show = false;
+        if (activeFilter === 'node' && !stack.includes('node')) show = false;
+        if (activeFilter === 'vue' && !stack.includes('vue')) show = false;
+        if (activeFilter === 'dirty' && status !== 'dirty') show = false;
+        if (activeFilter === 'clean' && status !== 'clean') show = false;
+
+        // Search query
+        if (query && !name.includes(query) && !stack.includes(query) && !status.includes(query)) {
+          show = false;
+        }
+
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      document.getElementById('emptyState').style.display = visible === 0 ? '' : 'none';
+    }
+  </script>
+
+  <style>
+    /* Smooth card transitions for filtering */
+    .app-card {
+      transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .app-card[style*="display: none"] {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+  </style>
+</body>
+</html>

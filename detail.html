@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>spmblive-v2026 — App Detail</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="diffuse-background"></div>
+
+  <div class="app-container">
+    <!-- Back navigation -->
+    <div class="detail-header">
+      <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to all apps
+      </a>
+    </div>
+
+    <!-- Title bar -->
+    <div class="detail-title" style="margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+      <h2>spmblive-v2026</h2>
+      <span class="status-indicator dirty" style="padding: 4px 12px; font-size: 0.8rem;">
+        <span class="stat-dot dirty" style="width: 8px; height: 8px; border-radius: 50%; background: var(--warning);"></span>
+        3 uncommitted changes
+      </span>
+    </div>
+
+    <!-- Badge row -->
+    <div class="badge-row" style="margin-bottom: 32px;">
+      <span class="badge php">PHP 8.2</span>
+      <span class="badge laravel">Laravel 11</span>
+      <span class="badge vue">Vue 3</span>
+    </div>
+
+    <!-- Two-panel detail grid -->
+    <div class="detail-grid">
+      <!-- Left: Stack -->
+      <div class="detail-panel">
+        <div class="panel-title">
+          <i class="fa-solid fa-layer-group"></i> Stack
+        </div>
+
+        <div class="stack-section">
+          <div class="stack-label">composer.json</div>
+          <div class="stack-item">
+            <span class="key">PHP Version</span>
+            <span class="value">^8.2</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">Framework</span>
+            <span class="value">Laravel 11.x</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">laravel/framework</span>
+            <span class="value">^11.0</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">inertiajs/inertia-laravel</span>
+            <span class="value">^1.0</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">spatie/laravel-permission</span>
+            <span class="value">^6.0</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">barryvdh/laravel-debugbar</span>
+            <span class="value">^3.0</span>
+          </div>
+        </div>
+
+        <div class="stack-section">
+          <div class="stack-label">package.json</div>
+          <div class="stack-item">
+            <span class="key">Node Version</span>
+            <span class="value">^20</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">Framework</span>
+            <span class="value">Vue 3</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">vue</span>
+            <span class="value">^3.5</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">@inertiajs/vue3</span>
+            <span class="value">^1.0</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">tailwindcss</span>
+            <span class="value">^3.4</span>
+          </div>
+          <div class="stack-item">
+            <span class="key">vite</span>
+            <span class="value">^5.4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: SCM -->
+      <div class="detail-panel">
+        <div class="panel-title">
+          <i class="fa-solid fa-code-branch"></i> SCM
+        </div>
+
+        <div class="scm-section">
+          <div class="stack-label">Remote</div>
+          <div class="scm-remote">
+            <i class="fa-brands fa-github"></i>
+            git@github.com:ilham/spmblive-v2026.git
+          </div>
+        </div>
+
+        <div class="scm-section">
+          <div class="stack-label">Current Branch</div>
+          <div style="font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.9rem; font-weight: 600; color: var(--accent); padding: 6px 0;">
+            feature/vue-migration
+          </div>
+        </div>
+
+        <div class="scm-section">
+          <div class="stack-label">Working Tree Status</div>
+          <div class="status-indicator dirty">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Uncommitted changes — 3 modified, 0 untracked
+          </div>
+          <div style="margin-top: 12px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.8;">
+            <div style="display: flex; gap: 8px;">
+              <span style="color: var(--warning); font-weight: 600;">M</span>
+              <span>resources/js/Pages/Dashboard.vue</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <span style="color: var(--warning); font-weight: 600;">M</span>
+              <span>resources/js/Components/FormWizard.vue</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <span style="color: var(--warning); font-weight: 600;">M</span>
+              <span>app/Http/Controllers/RegistrationController.php</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scm-section">
+          <div class="stack-label">Last Commit</div>
+          <div class="commit-card">
+            <div class="commit-hash">a3f7c21</div>
+            <div class="commit-msg">WIP: migrate registration form to Vue 3 Inertia</div>
+            <div class="commit-meta">
+              <span><i class="fa-regular fa-user"></i> ilham</span>
+              <span><i class="fa-regular fa-calendar"></i> Jul 24, 2026 8:42 AM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="detail-actions">
+      <button class="btn btn-primary">
+        <i class="fa-brands fa-git-alt"></i> Open in Cursor
+      </button>
+      <button class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> spmblive.test
+      </button>
+      <button class="btn btn-secondary">
+        <i class="fa-solid fa-arrows-rotate"></i> Refresh Scan
+      </button>
+      <button class="btn btn-secondary">
+        <i class="fa-solid fa-pen-to-square"></i> Edit
+      </button>
+    </div>
+  </div>
+</body>
+</html>

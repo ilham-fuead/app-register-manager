@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add App — App Register Manager</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="diffuse-background"></div>
+
+  <div class="app-container">
+    <!-- Back navigation -->
+    <div class="detail-header">
+      <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to all apps
+      </a>
+    </div>
+
+    <div class="form-container">
+      <div style="margin-bottom: 28px;">
+        <h2 style="font-size: 1.4rem; font-weight: 700;">Add App</h2>
+        <p class="text-muted text-sm mt-2">Register a project manually. Stack and SCM info will be auto-detected from the project path.</p>
+      </div>
+
+      <div class="form-card">
+        <div class="form-group">
+          <label for="appName">App Name <span class="text-muted">*</span></label>
+          <p class="hint">A friendly name to identify this project in your dashboard.</p>
+          <input type="text" id="appName" placeholder="e.g. my-new-app" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+          <label for="appPath">Project Path <span class="text-muted">*</span></label>
+          <p class="hint">The local folder path. Stack and SCM will be read from composer.json, package.json, and .git here.</p>
+          <input type="text" id="appPath" placeholder="e.g. C:\laragon\www\my-project" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+          <label>Auto-Detected Preview</label>
+          <div class="preview-box" id="previewBox">
+            <span class="text-muted">Enter a project path above to see what will be detected.</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="index.html" class="btn btn-secondary">Cancel</a>
+          <button class="btn btn-primary" onclick="saveApp()">
+            <i class="fa-solid fa-check"></i> Add to Registry
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updatePreview() {
+      const name = document.getElementById('appName').value.trim();
+      const path = document.getElementById('appPath').value.trim();
+      const preview = document.getElementById('previewBox');
+
+      if (!path) {
+        preview.innerHTML = '<span class="text-muted">Enter a project path above to see what will be detected.</span>';
+        return;
+      }
+
+      // Simulate detection
+      const lowerPath = path.toLowerCase();
+      let stackBadges = '';
+      let scmInfo = '';
+
+      if (lowerPath.includes('laravel') || lowerPath.includes('php')) {
+        stackBadges += '<span class="badge php" style="margin-right: 4px;">PHP 8.2</span>';
+        stackBadges += '<span class="badge laravel" style="margin-right: 4px;">Laravel</span>';
+      }
+      if (lowerPath.includes('vue') || lowerPath.includes('dashboard') || lowerPath.includes('retail')) {
+        stackBadges += '<span class="badge vue" style="margin-right: 4px;">Vue 3</span>';
+        stackBadges += '<span class="badge node" style="margin-right: 4px;">Node 20</span>';
+      }
+      if (!stackBadges) {
+        stackBadges = '<span class="text-muted">No recognizable stack detected</span>';
+      }
+
+      scmInfo = '<div style="margin-top: 10px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px;">' +
+                '<i class="fa-brands fa-github"></i>' +
+                '<span class="detected">git@github.com:ilham/' + (name || 'project') + '.git</span>' +
+                '</div>' +
+                '<div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">' +
+                '<span class="stat-dot clean" style="width: 6px; height: 6px; display: inline-block; border-radius: 50%; background: var(--success);"></span> ' +
+                'Branch: main · Working tree clean' +
+                '</div>';
+
+      preview.innerHTML =
+        '<div style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">' + (name || 'Project') + '</div>' +
+        stackBadges +
+        scmInfo;
+    }
+
+    function saveApp() {
+      const name = document.getElementById('appName').value.trim();
+      const path = document.getElementById('appPath').value.trim();
+
+      if (!name || !path) {
+        // Simple visual feedback
+        if (!name) document.getElementById('appName').style.borderColor = 'var(--danger)';
+        if (!path) document.getElementById('appPath').style.borderColor = 'var(--danger)';
+        return;
+      }
+
+      // Simulate save — go back to dashboard
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿# ===== Node.js =====
+node_modules/
+package-lock.json
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== PHP temp/debug =====
+*.bak
+*.bak.bak
+*.log
+tmp_*.php
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== Build artifacts =====
+dist/
+
+# ===== Temp/debug backups =====
+.tmp-backup/
+*.bak.bak2
+*.bak.bak
