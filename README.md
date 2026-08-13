@@ -1,6 +1,6 @@
 # App Register Manager
 
-A Vue 3 SPA for managing app registrations with active/inactive status tracking, built for Malaysian school admission systems (SPMB) environment.
+A Vue 3 SPA for managing app registrations with active/inactive status tracking, designed for universal project folder management.
 
 **Author:** Mohd Ilhammuddin Bin Mohd Fuead  
 **Organization:** Mandryn PHP Team  
