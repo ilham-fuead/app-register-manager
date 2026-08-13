@@ -162,29 +162,7 @@
             <i class="fa-solid fa-note-sticky"></i> Catatan & Ulasan
           </div>
 
-          <!-- Empty state -->
-          <div v-if="!app.notes?.length" class="text-muted text-sm">
-            Tiada catatan lagi. Tambah satu di bawah.
-          </div>
-
-          <!-- Journal entries (newest first) -->
-          <div v-for="n in app.notes" :key="n.id" class="note-entry">
-            <div class="note-meta">
-              <span class="note-date">
-                <i class="fa-regular fa-calendar"></i>
-                {{ formatNoteDate(n.created_at) }}
-              </span>
-              <span v-if="n.updated_at !== n.created_at" class="note-edited">
-                (disunting {{ formatNoteDate(n.updated_at) }})
-              </span>
-              <button class="btn-icon note-delete" @click="removeNote(n.id)">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </div>
-            <div class="note-content">{{ n.content }}</div>
-          </div>
-
-          <!-- Add / edit form -->
+          <!-- Add form (on top) -->
           <div class="notes-editor">
             <textarea
               v-model="noteDraft"
@@ -195,6 +173,51 @@
               <button class="btn btn-sm btn-primary" @click="saveNote" :disabled="savingNote || !noteDraft.trim()">
                 <i class="fa-solid" :class="savingNote ? 'fa-spinner fa-spin' : 'fa-plus'"></i>
                 {{ savingNote ? 'Menyimpan...' : 'Tambah Catatan' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div v-if="!app.notes?.length" class="text-muted text-sm" style="margin-top: 16px;">
+            Tiada catatan lagi.
+          </div>
+
+          <!-- Journal entries with pagination (20 per page) -->
+          <div v-if="app.notes?.length" style="margin-top: 16px;">
+            <div v-for="n in paginatedNotes" :key="n.id" class="note-entry">
+              <div class="note-meta">
+                <span class="note-date">
+                  <i class="fa-regular fa-calendar"></i>
+                  {{ formatNoteDate(n.created_at) }}
+                </span>
+                <span v-if="n.updated_at !== n.created_at" class="note-edited">
+                  (disunting {{ formatNoteDate(n.updated_at) }})
+                </span>
+                <button class="btn-icon note-delete" @click="removeNote(n.id)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+              <div class="note-content">{{ n.content }}</div>
+            </div>
+
+            <!-- Pagination controls -->
+            <div v-if="totalPages > 1" class="pagination" style="margin-top: 16px; display: flex; justify-content: center; gap: 8px;">
+              <button 
+                class="btn btn-sm btn-secondary" 
+                @click="currentPage--"
+                :disabled="currentPage === 1"
+              >
+                <i class="fa-solid fa-angle-left"></i>
+              </button>
+              <span style="align-self: center; font-size: 0.85rem;">
+                Halaman {{ currentPage }} dari {{ totalPages }}
+              </span>
+              <button 
+                class="btn btn-sm btn-secondary" 
+                @click="currentPage++"
+                :disabled="currentPage === totalPages"
+              >
+                <i class="fa-solid fa-angle-right"></i>
               </button>
             </div>
           </div>
@@ -218,7 +241,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchApp, updateApp, triggerScan, addNote, deleteNote } from '../api'
 import { buildEditorUrl, buildBrowserUrl } from '../config.js'
@@ -232,8 +255,21 @@ const saving = ref(false)
 const noteDraft = ref('')
 const savingNote = ref(false)
 const togglingActive = ref(false)
+const currentPage = ref(1)
+const itemsPerPage = 20
 
 const serviceTypes = ['auth', 'database', 'cache', 'storage', 'email', 'payment', 'sms', 'api', 'monitoring', 'search', 'queue', 'cdn', 'other']
+
+// Pagination for notes
+const totalPages = computed(() => {
+  const notes = app.value?.notes?.length || 0
+  return Math.ceil(notes / itemsPerPage)
+})
+const paginatedNotes = computed(() => {
+  const notes = (app.value?.notes || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  const start = (currentPage.value - 1) * itemsPerPage
+  return notes.slice(start, start + itemsPerPage)
+})
 
 onMounted(async () => {
   try {
@@ -323,6 +359,7 @@ async function saveNote() {
   try {
     await addNote(route.params.name, content)
     app.value = await fetchApp(route.params.name)
+    currentPage.value = 1
     noteDraft.value = ''
   } catch (e) {
     alert('Gagal menyimpan catatan: ' + e.message)
@@ -336,6 +373,7 @@ async function removeNote(noteId) {
   try {
     await deleteNote(route.params.name, noteId)
     app.value = await fetchApp(route.params.name)
+    currentPage.value = 1
   } catch (e) {
     alert('Gagal memadam catatan: ' + e.message)
   }

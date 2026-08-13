@@ -51,6 +51,14 @@
     />
   </div>
 
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span>&copy; 2024-2026 Mohd Ilhammuddin Bin Mohd Fuead</span>
+      <span>Mandryn PHP Team</span>
+    </div>
+  </footer>
+
   <!-- Config Modal -->
   <div v-if="showConfigModal" class="config-modal-overlay">
     <div class="config-modal">

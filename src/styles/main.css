@@ -856,6 +856,26 @@ a:hover {
 .mt-4 { margin-top: 16px; }
 .gap-2 { gap: 8px; }
 
+/* ===== Footer ===== */
+.app-footer {
+  margin-top: 40px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-content span {
+  opacity: 0.85;
+}
+
 /* ===== Tooltip ===== */
 [data-tooltip] {
   position: relative;
