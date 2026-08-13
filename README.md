@@ -134,6 +134,6 @@ curl -X PUT http://localhost/app-manager/api/apps.php?name=my-app \
 MIT License - You can use, modify, and distribute this software freely, provided you retain this copyright notice.
 
 ```
-© 2024 Mohd Ilhammuddin Bin Mohd Fuead
+© 2024-2026 Mohd Ilhammuddin Bin Mohd Fuead
 Mandryn PHP Team
 ```
