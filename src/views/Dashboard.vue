@@ -43,6 +43,7 @@
             <span class="app-card-name">
               <i v-if="app.is_pinned" class="fa-solid fa-thumbtack app-pin-icon" title="Disematkan"></i>
               {{ app.name }}
+              <span v-if="!app.folder_exists" class="folder-not-found" title="Folder tidak ditemunnya"> Tidak Ditemui</span>
             </span>
             <div class="app-card-header-right">
               <button
@@ -126,6 +127,7 @@
             <span class="app-card-name">
               <i v-if="app.is_pinned" class="fa-solid fa-thumbtack app-pin-icon" title="Disematkan"></i>
               {{ app.name }}
+              <span v-if="!app.folder_exists" class="folder-not-found" title="Folder tidak ditemunnya"> Tidak Ditemui</span>
             </span>
             <div class="app-card-header-right">
               <button

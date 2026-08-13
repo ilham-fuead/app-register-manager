@@ -336,6 +336,15 @@ a:hover {
   opacity: 0.55;
 }
 
+/* Folder not found label */
+.folder-not-found {
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 8px;
+  opacity: 0.9;
+}
+
 /* Eye toggle on cards */
 .app-active-btn {
   width: 28px;

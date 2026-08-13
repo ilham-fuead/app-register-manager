@@ -125,6 +125,9 @@ function handle_get(): void
         } else {
             $app['changed_files'] = [];
         }
+
+        // Check if folder still exists
+        $app['folder_exists'] = is_dir($app['path']);
     }
     unset($app);
 
@@ -396,6 +399,10 @@ function handle_put(): void
 
         if (array_key_exists('active', $body)) {
             $active = !empty($body['active']) ? 1 : 0;
+            // Validate folder exists if activating
+            if ($active === 1 && is_dir($app['path']) === false) {
+                json_response(['error' => 'Cannot activate: folder not found', 'path' => $app['path']], 400);
+            }
             $pdo->prepare('UPDATE apps SET is_active = :active, updated_at = NOW() WHERE id = :id')
                 ->execute(['active' => $active, 'id' => $app['id']]);
         }

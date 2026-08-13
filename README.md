@@ -53,6 +53,8 @@ mysql -u root < api/schema.sql
 mysql -u root < api/migrate_active_apps.sql
 ```
 
+On first launch, the dashboard will automatically scan `C:/laragon/www` (or your configured root path) to discover apps. Use "Segar Semula" button to trigger manual rescans.
+
 ### 3. Configuration
 
 Edit `config.php`:

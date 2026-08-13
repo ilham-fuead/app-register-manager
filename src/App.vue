@@ -94,6 +94,7 @@ async function updateConfigValue(key, value) {
 const apps = ref([])
 const loading = ref(true)
 const scanning = ref(false)
+const autoScanning = ref(false)
 const stats = reactive({ total: 0, clean: 0, dirty: 0, lastScan: '' })
 const showConfigModal = ref(false)
 const configLoading = ref(false)
@@ -137,6 +138,11 @@ async function loadApps() {
       stats.lastScan = 'belum pernah'
     }
     updateStats(data.apps)
+    // Auto-scan on first load if no apps yet (but only once)
+    if (data.apps.length === 0 && !scanning.value && !autoScanning.value) {
+      autoScanning.value = true
+      await refreshAll()
+    }
   } finally {
     loading.value = false
   }
