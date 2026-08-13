@@ -1,13 +1,23 @@
 {
   "name": "app-register-manager",
-  "private": true,
   "version": "1.0.0",
+  "description": "Vue 3 SPA for managing app registrations with active/inactive status tracking",
+  "author": "Mohd Ilhammuddin Bin Mohd Fuead",
+  "organization": "Mandryn PHP Team",
+  "license": "MIT",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
+  "keywords": [
+    "vue",
+    "vue3",
+    "app-management",
+    "laragon"
+  ],
   "dependencies": {
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
