@@ -101,9 +101,11 @@
             </div>
             <div class="scm-section" v-if="app.scm_status === 'dirty' && app.changed_files?.length">
               <div class="stack-label">Fail Diubah</div>
-              <div v-for="f in app.changed_files" :key="f.file_path" style="font-size: 0.82rem; padding: 2px 0; display: flex; gap: 8px;">
-                <span :style="{ color: f.status === 'A' ? 'var(--success)' : 'var(--warning)', fontWeight: 600 }">{{ f.status }}</span>
-                <span style="color: var(--text-secondary);">{{ f.file_path }}</span>
+              <div style="max-height: 120px; overflow-y: auto; padding: 8px 0;">
+                <div v-for="f in app.changed_files" :key="f.file_path" style="font-size: 0.82rem; padding: 2px 0; display: flex; gap: 8px;">
+                  <span :style="{ color: f.status === 'A' ? 'var(--success)' : 'var(--warning)', fontWeight: 600 }">{{ f.status }}</span>
+                  <span style="color: var(--text-secondary);">{{ f.file_path }}</span>
+                </div>
               </div>
             </div>
             <div class="scm-section" v-if="app.last_commit_hash">
@@ -157,16 +159,16 @@
         </div>
 
         <!-- Notes / Remarks journal -->
-        <div class="detail-panel">
+        <div class="detail-panel" style="margin-top: 32px;">
           <div class="panel-title">
-            <i class="fa-solid fa-note-sticky"></i> Catatan & Ulasan
+            <i class="fa-solid fa-note-sticky"></i> Catatan
           </div>
 
           <!-- Add form (on top) -->
           <div class="notes-editor">
             <textarea
               v-model="noteDraft"
-              placeholder="Tulis catatan atau ulasan... (disimpan dengan tarikh & masa)"
+              placeholder="Tulis catatan... (disimpan dengan tarikh & masa)"
               style="width: 100%; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; font-family: inherit; min-height: 100px; resize: vertical; background: var(--bg-secondary); color: var(--text-primary);"
             ></textarea>
             <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px;">
@@ -222,34 +224,7 @@
             </div>
           </div>
         </div>
-
-        <!-- Ulasan table - shows work done per app -->
-        <div class="detail-panel" v-if="app.ulasan?.length">
-          <div class="panel-title">
-            <i class="fa-solid fa-list"></i> Ulasan
-          </div>
-          <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
-              <thead>
-                <tr style="background: var(--bg-secondary);">
-                  <th style="padding: 10px 12px; text-align: left; border: 1px solid var(--border-color);">Tarikh</th>
-                  <th style="padding: 10px 12px; text-align: left; border: 1px solid var(--border-color);">Kerja yang Dilaksanakan</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(u, idx) in ulasanRows" :key="u.id || idx">
-                  <td style="padding: 10px 12px; border: 1px solid var(--border-color);">
-                    {{ formatNoteDate(u.tarikh) }}
-                  </td>
-                  <td style="padding: 10px 12px; border: 1px solid var(--border-color); color: var(--text-primary);">
-                    {{ u.kerja }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    </div>
 
     <!-- Actions -->
     <div class="detail-actions">
@@ -283,19 +258,19 @@ const noteDraft = ref('')
 const savingNote = ref(false)
 const togglingActive = ref(false)
 const currentPage = ref(1)
-const itemsPerPage = 20
 
 const serviceTypes = ['auth', 'database', 'cache', 'storage', 'email', 'payment', 'sms', 'api', 'monitoring', 'search', 'queue', 'cdn', 'other']
 
 // Pagination for notes
+const notesPerPage = 5
 const totalPages = computed(() => {
   const notes = app.value?.notes?.length || 0
-  return Math.ceil(notes / itemsPerPage)
+  return Math.ceil(notes / notesPerPage)
 })
 const paginatedNotes = computed(() => {
   const notes = (app.value?.notes || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-  const start = (currentPage.value - 1) * itemsPerPage
-  return notes.slice(start, start + itemsPerPage)
+  const start = (currentPage.value - 1) * notesPerPage
+  return notes.slice(start, start + notesPerPage)
 })
 
 onMounted(async () => {
@@ -405,14 +380,4 @@ async function removeNote(noteId) {
     alert('Gagal memadam catatan: ' + e.message)
   }
 }
-
-// Ulasan rows - transform api.ulasan to table format
-const ulasanRows = computed(() => {
-  const data = app.value?.ulasan || []
-  return data.map(u => ({
-    id: u.id,
-    tarikh: u.tarikh || u.created_at,
-    kerja: u.kerja || u.task || u.description || 'Tiada butiran'
-  }))
-})
 </script>

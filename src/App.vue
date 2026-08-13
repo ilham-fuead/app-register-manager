@@ -86,17 +86,11 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { fetchApps, triggerScan, fetchConfig } from './api'
+import { fetchApps, triggerScan, fetchConfig, updateConfig } from './api'
 
 // Helper to update a config value
 async function updateConfigValue(key, value) {
-  const res = await fetch(`/api/config.php?key=${encodeURIComponent(key)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ value })
-  })
-  if (!res.ok) throw new Error('Gagal menyimpan konfigurasi')
-  return res.json()
+  return updateConfig(key, value)
 }
 
 const apps = ref([])

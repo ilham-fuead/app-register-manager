@@ -82,7 +82,7 @@ function handle_get(): void
 
     $sql = "
         SELECT 
-            a.id, a.name, a.path, a.notes, a.is_active, a.is_pinned, a.pinned_at,
+            a.id, a.name, a.path, a.notes, a.ulasan, a.is_active, a.is_pinned, a.pinned_at,
             a.created_at, a.updated_at,
             scm.remote_url, scm.branch, scm.last_commit_hash,
             scm.last_commit_message, scm.last_commit_author, scm.last_commit_date,
@@ -107,10 +107,11 @@ function handle_get(): void
 
     // Enrich each app with stacks, changed files, and services
     foreach ($apps as &$app) {
+        $app['ulasan'] = $app['ulasan'] ? json_decode($app['ulasan'], true) : [];
         $app['stacks'] = get_app_stacks($pdo, $app['id']);
         $app['services'] = get_app_services($pdo, $app['id']);
         $app['notes'] = get_app_notes($pdo, $app['id']);
-        
+
         // Flatten stack tags for filtering
         $app['stack_tags'] = [];
         foreach ($app['stacks'] as $s) {
@@ -141,13 +142,16 @@ function handle_get(): void
 function get_app_by_name(PDO $pdo, string $name): ?array
 {
     $stmt = $pdo->prepare('
-        SELECT a.id, a.name, a.path, a.notes, a.is_active, a.is_pinned, a.pinned_at,
+        SELECT a.id, a.name, a.path, a.notes, a.ulasan, a.is_active, a.is_pinned, a.pinned_at,
                a.created_at, a.updated_at
         FROM apps a WHERE a.name = :name
     ');
     $stmt->execute(['name' => $name]);
     $app = $stmt->fetch();
     if (!$app) return null;
+
+    // Decode ulasan JSON if present
+    $app['ulasan'] = $app['ulasan'] ? json_decode($app['ulasan'], true) : [];
 
     $app['stacks'] = get_app_stacks($pdo, $app['id']);
     $app['services'] = get_app_services($pdo, $app['id']);
@@ -276,6 +280,24 @@ function handle_post_note(): void
 
     $body = json_decode(file_get_contents('php://input'), true);
     $content = trim((string)($body['note'] ?? $body['content'] ?? ''));
+    $ulasanContent = trim((string)($body['ulasan'] ?? $body['work'] ?? ''));
+
+    // Handle ulasan entry
+    if ($ulasanContent !== '' && $body['type'] !== 'note') {
+        $tarikh = trim((string)($body['tarikh'] ?? date('Y-m-d')));
+        $existingUlasan = $app['ulasan'] ?? [];
+        if (!is_array($existingUlasan)) $existingUlasan = [];
+        $existingUlasan[] = [
+            'tarikh' => $tarikh,
+            'kerja' => $ulasanContent,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $pdo->prepare('UPDATE apps SET ulasan = :ulasan WHERE id = :id')
+            ->execute(['ulasan' => json_encode(array_values($existingUlasan)), 'id' => $app['id']]);
+        json_response(['message' => 'Ulasan ditambah', 'app' => get_app_by_name($pdo, $name)], 201);
+        return;
+    }
+
     if ($content === '') {
         json_response(['error' => 'note content is required'], 400);
     }
@@ -405,6 +427,23 @@ function handle_put(): void
             }
             $pdo->prepare('UPDATE apps SET is_active = :active, updated_at = NOW() WHERE id = :id')
                 ->execute(['active' => $active, 'id' => $app['id']]);
+        }
+
+        // Ulasan — add new work entry to JSON array
+        if (isset($body['ulasan']) && is_array($body['ulasan'])) {
+            $existingUlasan = $app['ulasan'] ?? [];
+            if (!is_array($existingUlasan)) $existingUlasan = [];
+            foreach ($body['ulasan'] as $u) {
+                if (!empty($u['kerja'])) {
+                    $existingUlasan[] = [
+                        'tarikh' => $u['tarikh'] ?? date('Y-m-d'),
+                        'kerja' => $u['kerja'],
+                        'created_at' => $u['created_at'] ?? date('Y-m-d H:i:s')
+                    ];
+                }
+            }
+            $pdo->prepare('UPDATE apps SET ulasan = :ulasan, updated_at = NOW() WHERE id = :id')
+                ->execute(['ulasan' => json_encode(array_values($existingUlasan)), 'id' => $app['id']]);
         }
 
         // Pin / unpin — pins float to the top of the dashboard

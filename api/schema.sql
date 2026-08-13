@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `apps` (
   `name`       VARCHAR(120) NOT NULL,
   `path`       VARCHAR(512) NOT NULL,
   `notes`      TEXT NULL,
+  `ulasan`     JSON NULL COMMENT 'Work log entries: [{tarikh, kerja}]',
   `is_active`  TINYINT(1) NOT NULL DEFAULT 1,
   `is_pinned`  TINYINT(1) NOT NULL DEFAULT 0,
   `pinned_at`  TIMESTAMP NULL DEFAULT NULL,
