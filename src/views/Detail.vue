@@ -222,6 +222,33 @@
             </div>
           </div>
         </div>
+
+        <!-- Ulasan table - shows work done per app -->
+        <div class="detail-panel" v-if="app.ulasan?.length">
+          <div class="panel-title">
+            <i class="fa-solid fa-list"></i> Ulasan
+          </div>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+              <thead>
+                <tr style="background: var(--bg-secondary);">
+                  <th style="padding: 10px 12px; text-align: left; border: 1px solid var(--border-color);">Tarikh</th>
+                  <th style="padding: 10px 12px; text-align: left; border: 1px solid var(--border-color);">Kerja yang Dilaksanakan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(u, idx) in ulasanRows" :key="u.id || idx">
+                  <td style="padding: 10px 12px; border: 1px solid var(--border-color);">
+                    {{ formatNoteDate(u.tarikh) }}
+                  </td>
+                  <td style="padding: 10px 12px; border: 1px solid var(--border-color); color: var(--text-primary);">
+                    {{ u.kerja }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
     <!-- Actions -->
@@ -378,4 +405,14 @@ async function removeNote(noteId) {
     alert('Gagal memadam catatan: ' + e.message)
   }
 }
+
+// Ulasan rows - transform api.ulasan to table format
+const ulasanRows = computed(() => {
+  const data = app.value?.ulasan || []
+  return data.map(u => ({
+    id: u.id,
+    tarikh: u.tarikh || u.created_at,
+    kerja: u.kerja || u.task || u.description || 'Tiada butiran'
+  }))
+})
 </script>
