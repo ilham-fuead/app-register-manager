@@ -54,7 +54,7 @@
   <!-- Footer -->
   <footer class="app-footer">
     <div class="footer-content">
-      <span>&copy; 2024-2026 Mohd Ilhammuddin Bin Mohd Fuead</span>
+      <span>&copy; 2024-2026 <a href="https://github.com/ilham-fuead" target="_blank" rel="noopener">ilham-fuead</a></span>
       <span>Mandryn PHP Team</span>
     </div>
   </footer>

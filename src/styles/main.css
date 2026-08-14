@@ -876,6 +876,16 @@ a:hover {
   opacity: 0.85;
 }
 
+.app-footer a {
+  color: var(--accent-hover);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
 /* ===== Tooltip ===== */
 [data-tooltip] {
   position: relative;
